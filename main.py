@@ -7,16 +7,17 @@ import json
 class MainPage:
     def __init__(self):
 
-        #created the empty list to add all informations
+        # created the empty list to add all informations
         self.matrix = []
 
+        # added a command variable to run diff functions when either create new file or open existing file btn is clicked
         self.command = ''
 
         window = Tk()
         window.title("Python Project")
         window.geometry("500x500")
 
-        #set first frame
+        # set first frame
         self.frame0 = Frame(window)
         self.frame0.pack()
 
@@ -47,11 +48,12 @@ class MainPage:
             'Arial 13'), command=self.showFields)
         submit_button.pack()
 
+        # for going back to frame0
         back_button = Button(self.frame1, text="Back", font=(
             'Arial 13'), command=self.backToFrame0Btn)
         back_button.pack()
 
-        # second frame with title
+        # third frame with title
         self.frame2 = Frame(window)
         # initial title to be changed to the inputted value
         self.courseInputValue = Label(
@@ -86,7 +88,8 @@ class MainPage:
         Score.pack()
 
         self.score = IntVar()
-        self.Score = Entry(self.frame2, width=30, font=('Arial 16'), textvariable=self.score)
+        self.Score = Entry(self.frame2, width=30, font=(
+            'Arial 16'), textvariable=self.score)
         self.Score.pack()
 
         # added event listener to the button to save user info
@@ -94,23 +97,53 @@ class MainPage:
             'Arial 13'), command=self.saveUserInfos)
         submit_button.pack()
 
-        #button to clear entry
+        # button to clear entry
         clear_button = Button(self.frame2, text="Clear Entry", font=(
             'Arial 13'), command=self.clearEntry)
         clear_button.pack()
 
+        #menu bar for run analysis
+        self.menubar = Menu(window)
+        window.config(menu = self.menubar)
+
+        self.analysisMenu = Menu(self.menubar, tearoff = 0)
+
+        #I commented this line of code to hide the run analysis button, the code is later in the open file function and the show field function
+
+        #self.menubar.add_cascade(label='Run Analysis', menu = self.analysisMenu)
+        self.analysisMenu.add_command(label='Mean score', command=self.meanScore)
+        self.analysisMenu.add_command(label='Max score', command=self.maxScore)
+        self.analysisMenu.add_command(label='Min score', command=self.minScore)
+        self.analysisMenu.add_command(label='Highest score', command=self.highScore)
+        self.analysisMenu.add_command(label='Students above 70', command=self.passScore)
+        self.analysisMenu.add_command(label='Students that failed', command=self.failedScore)
+
+
         window.mainloop()
 
+    # opening existing file function
     def openFile(self):
-        self.filename = filedialog.askopenfilename(initialdir='/', title='Open file', filetypes = (("Json file","*.json"),("xml files","*.xml")))
+        self.filename = filedialog.askopenfilename(
+            initialdir='/', title='Open file', filetypes=(("Json file", "*.json"), ("xml files", "*.xml")))
         if self.filename != '':
             self.frame2.pack()
             self.frame0.pack_forget()
 
+            # setting subject value from the saved file
+            with open(self.filename, 'r') as openfile:
+                fjson_object = json.load(openfile)
+                sameTitle = fjson_object[0][0]
+                self.courseInputValue['text'] = sameTitle
+            # print(sameTitle)
+
+            #code to show the run analysis btn
+            self.menubar.add_cascade(label='Run Analysis', menu = self.analysisMenu)
             self.command = 'open file'
 
+    # creating new file function
     def createFile(self):
-        self.filename = filedialog.asksaveasfilename(initialdir='/', title='Save file', defaultextension=".json")
+        self.filename = filedialog.asksaveasfilename(
+            initialdir='/', title='Save file', defaultextension=".json")
 
         if self.filename != '':
             self.frame1.pack()
@@ -118,6 +151,7 @@ class MainPage:
 
             self.command = 'create file'
 
+    # back to frame0 function
     def backToFrame0Btn(self):
         self.frame0.pack()
         self.frame1.pack_forget()
@@ -127,29 +161,29 @@ class MainPage:
 
         if courseTitleInput != "":
 
-            #to make the second frame visible
+            # to make the third frame visible
             self.frame2.pack()
 
-            #to hide the first frame
+            # to hide the second frame
             self.frame1.pack_forget()
-            self.courseInputValue['text'] = self.courseInput.get()
 
-            #created the file for adding all infos
-            
-            #self.newfile = open('newfile.json', "w", encoding='UTF8', newline='')
-            #self.newfile.writelines(self.matrix)
-            #self.newfile.close()
+            #code to show the run analysis btn
+            self.menubar.add_cascade(label='Run Analysis', menu = self.analysisMenu)
+
+            # setting the subject value from the subject value input field
+            if self.command == 'create file':
+                self.courseInputValue['text'] = self.courseInput.get()
         else:
             tkinter.messagebox.showinfo("Input", "Subject field is empty!")
 
     def saveUserInfos(self):
 
-        #create a new row everytime new informations are added
-        #new row will be added to the multi dimensional list, the matrix[] list
-        current_row = [self.matricNo.get(), self.firstname.get(),
+        # create a new row everytime new informations are added
+        # new row will be added to the multi dimensional list, the matrix[] list
+        current_row = [self.courseInput.get(), self.matricNo.get(), self.firstname.get(),
                        self.lastname.get(), self.score.get()]
 
-        #appending the new row to the main list
+        # appending the new row to the main list
         self.matrix.append(current_row)
 
         if self.command == 'create file':
@@ -160,16 +194,13 @@ class MainPage:
                 json_object = json.load(openfile)
                 json_object.append(current_row)
 
-                #print(json_object)
+                # print(json_object)
 
+            # updating the newly added informations
             with open(self.filename, 'w') as outfile:
                 json.dump(json_object, outfile)
 
-        #self.newfile = open('newfile.csv', "a")
-        #self.newfile.writelines(self.matrix)
-        #self.newfile.close()
-
-        #clearing the input fields after submission for new entry
+        # clearing the input fields after submission for new entry
         self.MatricNo.delete(0, END)
         self.MatricNo.insert(0, '')
         self.FirstName.delete(0, END)
@@ -179,11 +210,10 @@ class MainPage:
         self.Score.delete(0, END)
         self.Score.insert(0, '')
 
-        #autofocusing the first input field
+        # autofocusing the first input field
         self.MatricNo.focus()
 
-        #print(self.matrix)
-
+        # print(self.matrix)
 
     def clearEntry(self):
         self.MatricNo.delete(0, END)
@@ -197,6 +227,29 @@ class MainPage:
 
         self.MatricNo.focus()
 
+    def meanScore(self):
+        print('')
+
+
+
+    def maxScore(self):
+        print('')
+
+
+    def minScore(self):
+        print('')
+
+
+    def highScore(self):
+        print('')
+
+
+    def passScore(self):
+        print('')
+
+
+    def failedScore(self):
+        print('')
 
 
 MainPage()
