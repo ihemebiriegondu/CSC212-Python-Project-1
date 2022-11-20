@@ -127,9 +127,7 @@ class MainPage:
         self.frame3 = Frame(window)
 
         self.result = Label(self.frame3, text="")
-        self.resultInfo = Label(self.frame3, text="")
         self.result.pack()
-        self.resultInfo.pack()
 
         # for going back to frame2
         back_button = Button(self.frame3, text="Back", cursor="hand2", font=(
@@ -341,33 +339,75 @@ class MainPage:
         self.frame3.pack()
         self.frame2.pack_forget()
 
+        #empty array to store the text to be displayed for each student with the highest mark
         someArray = []
 
+        #iterating through the highest score array to add students info in the someArray[] array
+        #and appending the results
         for i in range(len(self.highestStudent)):
             #print(self.highestStudent[i])
             self.result['text'] = 'The student(s) with the highest score is/are: '
-            someArray.append(str(self.highestStudent[i][3] + " " + str(
-                self.highestStudent[i][2]) + " " + 'with matric number ' + str(self.highestStudent[i][1]) + " having the score " + str(self.highestStudent[i][4])))
+            someArray.append(str(self.highestStudent[i][3] + " " + str(self.highestStudent[i][2]) + "           " + 
+                str(self.highestStudent[i][1]) + "             " + str(self.highestStudent[i][4])))
         
+        #a function to display as many labels as possible for each high score
         def addHighScoreNameToLabel():
             element = ''
             for i in range(len(someArray)):
                 element = element + someArray[i]+'\n' 
             return element
 
-        namesLabel = Label(self.frame3, text=addHighScoreNameToLabel())
-        namesLabel.pack()
+        #clearing any text in the label tag
+        self.namesLabel = Label(self.frame3, text='')
+
+        #creating the label for the students info
+        self.namesLabel = Label(self.frame3, text=addHighScoreNameToLabel())
+        self.namesLabel.pack()
 
 
     def passScore(self):
         with open(self.filename, 'r') as openfile:
             fileToAnalyze = json.load(openfile)
 
+        #empty list to put all students that pass 70
+        self.passScores = []
+
         # iterating through the file's multidimensional list rows i and column 4,
         # to check which row has score that is greater than or equal to 70 and printing it out
         for i in range(len(fileToAnalyze)):
             if fileToAnalyze[i][4] >= 70:
-                print(fileToAnalyze[i])
+                self.passScores.append(fileToAnalyze[i])
+        #print(self.passScores)
+
+         # hiding the frame2 and showing the eda results frame
+        self.frame3.pack()
+        self.frame2.pack_forget()
+
+        #empty array to stored the text to be displayed for each student above the 70 mark
+        someArray = []
+
+        #iterating through the highest score array to add students info in the someArray[] array
+        #and appending the results
+        for i in range(len(self.passScores)):
+            #print(self.passScores[i])
+            self.result['text'] = 'The students with 70 and above are: '
+            someArray.append(str(self.passScores[i][3] + " " + str(self.passScores[i][2]) + "           " + 
+                str(self.passScores[i][1]) + "             " + str(self.passScores[i][4])))
+        
+        #a function to display as many labels as possible for each high score
+        def addHighScoreNameToLabel():
+            element = ''
+            for i in range(len(someArray)):
+                element = element + someArray[i]+'\n' 
+            return element
+
+        #clearing any text in the label tag
+        self.namesLabel = Label(self.frame3, text='')
+
+        #creating the label for the students info
+        self.namesLabel = Label(self.frame3, text=addHighScoreNameToLabel())
+        self.namesLabel.pack()
+                
 
     def failedScore(self):
         with open(self.filename, 'r') as openfile:
