@@ -14,18 +14,19 @@ class MainPage:
         self.command = ''
 
         window = Tk()
-        window.title("Python Project")
-        window.geometry("500x500")
+        window.title("Group six (6) project")
+        window.geometry("900x500")
+        # window.configure(bg='')
 
         # set first frame
         self.frame0 = Frame(window)
         self.frame0.pack()
 
-        openfile_button = Button(self.frame0, text="Open existing file", font=(
+        openfile_button = Button(self.frame0, text="Open existing file", cursor="hand2", bg='yellow2', borderwidth='2', relief='groove', font=(
             'Arial 13'), command=self.openFile)
         openfile_button.pack()
 
-        createfile_button = Button(self.frame0, text="create new file", font=(
+        createfile_button = Button(self.frame0, text="create new file", cursor="hand2", bg='yellow2', borderwidth='2', relief='groove', font=(
             'Arial 13'), command=self.createFile)
         createfile_button.pack()
 
@@ -44,12 +45,12 @@ class MainPage:
         subjectEntry.pack()
 
         # added event listener to the button for hiding the initial frame and showing frame2
-        submit_button = Button(self.frame1, text="Submit", font=(
+        submit_button = Button(self.frame1, text="Submit", cursor="hand2", font=(
             'Arial 13'), command=self.showFields)
         submit_button.pack()
 
         # for going back to frame0
-        back_button = Button(self.frame1, text="Back", font=(
+        back_button = Button(self.frame1, text="Back", cursor="hand2", font=(
             'Arial 13'), command=self.backToFrame0Btn)
         back_button.pack()
 
@@ -93,31 +94,47 @@ class MainPage:
         self.Score.pack()
 
         # added event listener to the button to save user info
-        submit_button = Button(self.frame2, text="Save Entry", font=(
+        submit_button = Button(self.frame2, text="Save Entry", cursor="hand2", font=(
             'Arial 13'), command=self.saveUserInfos)
         submit_button.pack()
 
         # button to clear entry
-        clear_button = Button(self.frame2, text="Clear Entry", font=(
+        clear_button = Button(self.frame2, text="Clear Entry", cursor="hand2", font=(
             'Arial 13'), command=self.clearEntry)
         clear_button.pack()
 
-        #menu bar for run analysis
+        # menu bar for run analysis
         self.menubar = Menu(window)
-        window.config(menu = self.menubar)
+        window.config(menu=self.menubar)
 
-        self.analysisMenu = Menu(self.menubar, tearoff = 0)
+        self.analysisMenu = Menu(self.menubar, tearoff=0)
 
-        #I commented this line of code to hide the run analysis button, the code is later in the open file function and the show field function
+        # I commented this line of code to hide the run analysis button, the code is later in the open file function and the show field function
 
         #self.menubar.add_cascade(label='Run Analysis', menu = self.analysisMenu)
-        self.analysisMenu.add_command(label='Mean score', command=self.meanScore)
+        self.analysisMenu.add_command(
+            label='Mean score', command=self.meanScore)
         self.analysisMenu.add_command(label='Max score', command=self.maxScore)
         self.analysisMenu.add_command(label='Min score', command=self.minScore)
-        self.analysisMenu.add_command(label='Highest score', command=self.highStudent)
-        self.analysisMenu.add_command(label='Students above 70', command=self.passScore)
-        self.analysisMenu.add_command(label='Students that failed', command=self.failedScore)
+        self.analysisMenu.add_command(
+            label='Highest score', command=self.highStudent)
+        self.analysisMenu.add_command(
+            label='Students above 70', command=self.passScore)
+        self.analysisMenu.add_command(
+            label='Students that failed', command=self.failedScore)
 
+        # creating a forth frame for displaying eda results
+        self.frame3 = Frame(window)
+
+        self.result = Label(self.frame3, text="")
+        self.resultInfo = Label(self.frame3, text="")
+        self.result.pack()
+        self.resultInfo.pack()
+
+        # for going back to frame2
+        back_button = Button(self.frame3, text="Back", cursor="hand2", font=(
+            'Arial 13'), command=self.backToFrame2Btn)
+        back_button.pack()
 
         window.mainloop()
 
@@ -136,8 +153,9 @@ class MainPage:
                 self.courseInputValue['text'] = sameTitle
             # print(sameTitle)
 
-            #code to show the run analysis btn
-            self.menubar.add_cascade(label='Run Analysis', menu = self.analysisMenu)
+            # code to show the run analysis btn
+            self.menubar.add_cascade(
+                label='Run Analysis', menu=self.analysisMenu)
             self.command = 'open file'
 
     # creating new file function
@@ -167,8 +185,9 @@ class MainPage:
             # to hide the second frame
             self.frame1.pack_forget()
 
-            #code to show the run analysis btn
-            self.menubar.add_cascade(label='Run Analysis', menu = self.analysisMenu)
+            # code to show the run analysis btn
+            self.menubar.add_cascade(
+                label='Run Analysis', menu=self.analysisMenu)
 
             # setting the subject value from the subject value input field
             if self.command == 'create file':
@@ -228,44 +247,55 @@ class MainPage:
         self.MatricNo.focus()
 
     def meanScore(self):
-        #empty list to put all the scores obtained
+        # empty list to put all the scores obtained
         averageList = []
 
-        #open the file to read the values
+        # open the file to read the values
         with open(self.filename, 'r') as openfile:
             fileToAnalyze = json.load(openfile)
 
-        #adding all the scores to the empty list created
+        # adding all the scores to the empty list created
         for rows in fileToAnalyze:
-            #adding the element with index 4 (the scores only not all informations)
+            # adding the element with index 4 (the scores only not all informations)
             averageList.append(rows[4])
-        
-        #calculating the sum of all the elements with python sum() function
+
+        # calculating the sum of all the elements with python sum() function
         averageTotalScore = sum(averageList)
-        #getting the total number of results entered
+        # getting the total number of results entered
         averageTotalStudents = len(averageList)
 
-        #print(averageTotalScore)
-        #print(averageTotalStudents)
+        # print(averageTotalScore)
+        # print(averageTotalStudents)
 
-        #calculating the average to 2 decimal places
+        # calculating the average to 2 decimal places
         self.averageScore = round(averageTotalScore / averageTotalStudents, 2)
-        print(self.averageScore)
+        # print(self.averageScore)
 
+        # hiding the frame2 and showing the eda results frame
+        self.frame3.pack()
+        self.frame2.pack_forget()
+
+        self.result['text'] = 'The average score is ' + str(self.averageScore)
 
     def maxScore(self):
-        #empty list to put all the scores obtained
+        # empty list to put all the scores obtained
         maxList = []
 
         with open(self.filename, 'r') as openfile:
             fileToAnalyze = json.load(openfile)
         for rows in fileToAnalyze:
             maxList.append(rows[4])
-        
-        #using python max() function to get the max element in the list and assigning it to the maxScore variable
-        self.maxScore = max(maxList)
-        print(self.maxScore)
 
+        # using python max() function to get the max element in the list and assigning it to the maxScore variable
+        self.maxScore = max(maxList)
+        # print(self.maxScore)
+
+        # hiding the frame2 and showing the eda results frame
+        self.frame3.pack()
+        self.frame2.pack_forget()
+
+        self.result['text'] = 'The maximum score is ' + str(self.maxScore)
+        
 
     def minScore(self):
         minList = []
@@ -274,52 +304,84 @@ class MainPage:
             fileToAnalyze = json.load(openfile)
         for rows in fileToAnalyze:
             minList.append(rows[4])
-        
-        #using python min() function to get the min element in the list and assigning it to the maxScore variable
-        self.minScore = min(minList)
-        print(self.minScore)
 
+        # using python min() function to get the min element in the list and assigning it to the maxScore variable
+        self.minScore = min(minList)
+        # print(self.minScore)
+
+        # hiding the frame2 and showing the eda results frame
+        self.frame3.pack()
+        self.frame2.pack_forget()
+
+        self.result['text'] = 'The minimum score is ' + str(self.minScore)
 
     def highStudent(self):
         with open(self.filename, 'r') as openfile:
             fileToAnalyze = json.load(openfile)
-        
-        #running the max function to get the maximum element
+
+        # running the max function to get the maximum element
         maxList = []
 
         for rows in fileToAnalyze:
             maxList.append(rows[4])
-        
-        self.maxScore = max(maxList)
-        print(self.maxScore)
 
-        #iterating through the file's multidimensional list rows i and column 4, 
+        self.maxScore = max(maxList)
+        # print(self.maxScore)
+
+        # I created a list incase there are more than one student with the highest score
+        self.highestStudent = []
+        # iterating through the file's multidimensional list rows i and column 4,
         # to check which row has score that is equal to the maximum score and printing it out
         for i in range(len(fileToAnalyze)):
             if fileToAnalyze[i][4] == self.maxScore:
-                print(fileToAnalyze[i])
+                self.highestStudent.append(fileToAnalyze[i])
+        # print(self.highestStudent)
+
+        # hiding the frame2 and showing the eda results frame
+        self.frame3.pack()
+        self.frame2.pack_forget()
+
+        someArray = []
+
+        for i in range(len(self.highestStudent)):
+            #print(self.highestStudent[i])
+            self.result['text'] = 'The student(s) with the highest score is/are: '
+            someArray.append(str(self.highestStudent[i][3] + " " + str(
+                self.highestStudent[i][2]) + " " + 'with matric number ' + str(self.highestStudent[i][1]) + " having the score " + str(self.highestStudent[i][4])))
+        
+        def addHighScoreNameToLabel():
+            element = ''
+            for i in range(len(someArray)):
+                element = element + someArray[i]+'\n' 
+            return element
+
+        namesLabel = Label(self.frame3, text=addHighScoreNameToLabel())
+        namesLabel.pack()
 
 
     def passScore(self):
         with open(self.filename, 'r') as openfile:
             fileToAnalyze = json.load(openfile)
-        
-        #iterating through the file's multidimensional list rows i and column 4, 
+
+        # iterating through the file's multidimensional list rows i and column 4,
         # to check which row has score that is greater than or equal to 70 and printing it out
         for i in range(len(fileToAnalyze)):
             if fileToAnalyze[i][4] >= 70:
                 print(fileToAnalyze[i])
 
-
     def failedScore(self):
         with open(self.filename, 'r') as openfile:
             fileToAnalyze = json.load(openfile)
-        
-        #iterating through the file's multidimensional list rows i and column 4, 
+
+        # iterating through the file's multidimensional list rows i and column 4,
         # to check which row has score that is less than 40 and printing it out
         for i in range(len(fileToAnalyze)):
             if fileToAnalyze[i][4] < 40:
                 print(fileToAnalyze[i])
+
+    def backToFrame2Btn(self):
+        self.frame2.pack()
+        self.frame3.pack_forget()
 
 
 MainPage()
