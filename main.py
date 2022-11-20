@@ -114,7 +114,7 @@ class MainPage:
         self.analysisMenu.add_command(label='Mean score', command=self.meanScore)
         self.analysisMenu.add_command(label='Max score', command=self.maxScore)
         self.analysisMenu.add_command(label='Min score', command=self.minScore)
-        self.analysisMenu.add_command(label='Highest score', command=self.highScore)
+        self.analysisMenu.add_command(label='Highest score', command=self.highStudent)
         self.analysisMenu.add_command(label='Students above 70', command=self.passScore)
         self.analysisMenu.add_command(label='Students that failed', command=self.failedScore)
 
@@ -228,28 +228,98 @@ class MainPage:
         self.MatricNo.focus()
 
     def meanScore(self):
-        print('')
+        #empty list to put all the scores obtained
+        averageList = []
 
+        #open the file to read the values
+        with open(self.filename, 'r') as openfile:
+            fileToAnalyze = json.load(openfile)
+
+        #adding all the scores to the empty list created
+        for rows in fileToAnalyze:
+            #adding the element with index 4 (the scores only not all informations)
+            averageList.append(rows[4])
+        
+        #calculating the sum of all the elements with python sum() function
+        averageTotalScore = sum(averageList)
+        #getting the total number of results entered
+        averageTotalStudents = len(averageList)
+
+        #print(averageTotalScore)
+        #print(averageTotalStudents)
+
+        #calculating the average to 2 decimal places
+        self.averageScore = round(averageTotalScore / averageTotalStudents, 2)
+        print(self.averageScore)
 
 
     def maxScore(self):
-        print('')
+        #empty list to put all the scores obtained
+        maxList = []
+
+        with open(self.filename, 'r') as openfile:
+            fileToAnalyze = json.load(openfile)
+        for rows in fileToAnalyze:
+            maxList.append(rows[4])
+        
+        #using python max() function to get the max element in the list and assigning it to the maxScore variable
+        self.maxScore = max(maxList)
+        print(self.maxScore)
 
 
     def minScore(self):
-        print('')
+        minList = []
+
+        with open(self.filename, 'r') as openfile:
+            fileToAnalyze = json.load(openfile)
+        for rows in fileToAnalyze:
+            minList.append(rows[4])
+        
+        #using python min() function to get the min element in the list and assigning it to the maxScore variable
+        self.minScore = min(minList)
+        print(self.minScore)
 
 
-    def highScore(self):
-        print('')
+    def highStudent(self):
+        with open(self.filename, 'r') as openfile:
+            fileToAnalyze = json.load(openfile)
+        
+        #running the max function to get the maximum element
+        maxList = []
+
+        for rows in fileToAnalyze:
+            maxList.append(rows[4])
+        
+        self.maxScore = max(maxList)
+        print(self.maxScore)
+
+        #iterating through the file's multidimensional list rows i and column 4, 
+        # to check which row has score that is equal to the maximum score and printing it out
+        for i in range(len(fileToAnalyze)):
+            if fileToAnalyze[i][4] == self.maxScore:
+                print(fileToAnalyze[i])
 
 
     def passScore(self):
-        print('')
+        with open(self.filename, 'r') as openfile:
+            fileToAnalyze = json.load(openfile)
+        
+        #iterating through the file's multidimensional list rows i and column 4, 
+        # to check which row has score that is greater than or equal to 70 and printing it out
+        for i in range(len(fileToAnalyze)):
+            if fileToAnalyze[i][4] >= 70:
+                print(fileToAnalyze[i])
 
 
     def failedScore(self):
-        print('')
+        with open(self.filename, 'r') as openfile:
+            fileToAnalyze = json.load(openfile)
+        
+        #iterating through the file's multidimensional list rows i and column 4, 
+        # to check which row has score that is less than 40 and printing it out
+        for i in range(len(fileToAnalyze)):
+            if fileToAnalyze[i][4] < 40:
+                print(fileToAnalyze[i])
 
 
 MainPage()
