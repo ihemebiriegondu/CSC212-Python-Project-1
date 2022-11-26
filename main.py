@@ -24,17 +24,20 @@ class MainPage:
 
         openfile_button = Button(self.frame0, text="Open existing file", cursor="hand2", bg='green', fg='white', borderwidth='2', relief='groove', font=(
             'Arial 13'), command=self.openFile)
-        openfile_button.pack(padx=20, pady=0, ipadx=10, ipady=8, anchor='center', side='bottom', expand=True)
-        #anchor='ne', side='bottom'
+        openfile_button.pack(padx=20, pady=0, ipadx=10, ipady=8,
+                             anchor=CENTER, side='right')
+        # anchor='ne', side='bottom'
 
         createfile_button = Button(self.frame0, text="create new file", cursor="hand2", bg='green', fg='white', borderwidth='2', relief='groove', font=(
             'Arial 13'), command=self.createFile)
-        createfile_button.pack(padx=20, ipadx=20, ipady=8, pady=0, anchor='center', side='top', expand=True)
+        createfile_button.pack(padx=20, ipadx=20, ipady=8,
+                               pady=0, anchor=CENTER, side='left')
 
         # set create new file frame with subject title
         self.frame1 = Frame(window, bg='yellow')
 
-        subject = Label(self.frame1, text="COURSE TITLE", anchor='w', padx=20, pady=25, bg='yellow', fg='black', font=('Arial Bold', 13), justify=LEFT)
+        subject = Label(self.frame1, text="COURSE TITLE", anchor='w', padx=20,
+                        pady=25, bg='yellow', fg='black', font=('Arial Bold', 13), justify=LEFT)
         subject.pack(anchor='w')
 
         # storing the course title in a string
@@ -44,18 +47,21 @@ class MainPage:
         subjectEntry = Entry(self.frame1, width=30, font=(
             'Arial 15'), justify=LEFT, highlightthickness=2, relief='groove', textvariable=self.courseInput)
         subjectEntry.focus()
-        subjectEntry.config(highlightcolor='green4', highlightbackground='green4')
+        subjectEntry.config(highlightcolor='green4',
+                            highlightbackground='green4')
         subjectEntry.pack(ipadx=10, ipady=10, anchor='w', padx=20)
 
         # added event listener to the button for hiding the initial frame and showing frame2
         submit_button = Button(self.frame1, text="Submit", cursor="hand2", bg='green', fg='white', borderwidth='2', relief='groove', font=(
             'Arial 13'), command=self.showFields)
-        submit_button.pack(padx=20, ipadx=20, ipady=8, pady=20, anchor='w', side='top')
+        submit_button.pack(padx=20, ipadx=20, ipady=8,
+                           pady=20, anchor='w', side='top')
 
         # for going back to frame0
         back_button = Button(self.frame1, text="Back", cursor="hand2", bg='green', fg='white', borderwidth='2', relief='groove', font=(
             'Arial 13'), command=self.backToFrame0Btn)
-        back_button.pack(padx=30, pady=30, ipadx=20, ipady=8, anchor='ne', side='bottom')
+        back_button.pack(padx=30, pady=30, ipadx=20,
+                         ipady=8, anchor='ne', side='bottom')
 
         # third frame with title
         self.frame2 = Frame(window, bg='yellow')
@@ -63,87 +69,101 @@ class MainPage:
         # initial title to be changed to the inputted value
         self.courseInputValue = Label(
             self.frame2, text='Subject Title', font=('Arial 16'), padx=20, pady=10, bg='yellow', fg='black', justify=LEFT)
-        self.courseInputValue.pack(anchor='w')
+        self.courseInputValue.pack(anchor='nw', side='left')
 
-        matricNo = Label(self.frame2, text="Matric No", bg='yellow', padx=20, pady=10, font=('Arial 13'))
-        matricNo.pack()
+        # adding the run analysis button
+
+        self.runAnalysisList = [
+            "Average score",
+            "Minimum score",
+            "Maximum score",
+            "Best student",
+            "Students with 70 and above",
+            "Students that failed"
+        ]
+
+        self.runAnalysisVariable = StringVar()
+        self.runAnalysisVariable.set('Run Analysis')
+
+        self.drop = OptionMenu(self.frame2, self.runAnalysisVariable, *self.runAnalysisList, command=self.showRunAnalysisDropdown)
+        self.drop.config(bg='green', fg='white', activebackground='green', activeforeground='white',
+                         cursor="hand2", borderwidth='0', relief='flat', font=('Arial 13'))
+        self.drop['menu'].config(
+            bg="white", fg='green', activebackground='yellow', activeforeground='green', relief=FLAT)
+        self.drop.pack(anchor='nw', side='right', padx=20,
+                       ipadx=20, ipady=8, pady=20)
+
+        matricNo = Label(self.frame2, text="Matric No",
+                         bg='yellow', padx=20, pady=10, font=('Arial 13'))
+        matricNo.pack(pady=(30, 0))
 
         self.matricNo = StringVar()
         self.MatricNo = Entry(self.frame2, width=30, font=(
             'Arial 15'), highlightthickness=2, relief='flat', textvariable=self.matricNo)
         self.MatricNo.focus()
-        self.MatricNo.config(highlightcolor='green4', highlightbackground='green4')
+        self.MatricNo.config(highlightcolor='green4',
+                             highlightbackground='green4')
         self.MatricNo.pack(ipadx=10, ipady=3, padx=20)
-       
-        FirstName = Label(self.frame2, text="First Name", bg='yellow', padx=20, pady=10, font=('Arial 13'))
+
+        FirstName = Label(self.frame2, text="First Name",
+                          bg='yellow', padx=20, pady=10, font=('Arial 13'))
         FirstName.pack()
 
         self.firstname = StringVar()
         self.FirstName = Entry(self.frame2, width=30, font=(
             'Arial 15'), highlightthickness=2, relief='flat', textvariable=self.firstname)
-        self.FirstName.config(highlightcolor='green4', highlightbackground='green4')
+        self.FirstName.config(highlightcolor='green4',
+                              highlightbackground='green4')
         self.FirstName.pack(ipadx=10, ipady=3, padx=20)
 
-        LastName = Label(self.frame2, text="Last Name", bg='yellow', padx=20, pady=10, font=('Arial 13'))
+        LastName = Label(self.frame2, text="Last Name",
+                         bg='yellow', padx=20, pady=10, font=('Arial 13'))
         LastName.pack()
 
         self.lastname = StringVar()
         self.LastName = Entry(self.frame2, width=30, font=(
             'Arial 15'), highlightthickness=2, relief='flat', textvariable=self.lastname)
-        self.LastName.config(highlightcolor='green4', highlightbackground='green4')
+        self.LastName.config(highlightcolor='green4',
+                             highlightbackground='green4')
         self.LastName.pack(ipadx=10, ipady=3, padx=20)
 
-        Score = Label(self.frame2, text="Score", bg='yellow', padx=20, pady=10, font=('Arial 13'))
+        Score = Label(self.frame2, text="Score", bg='yellow',
+                      padx=20, pady=10, font=('Arial 13'))
         Score.pack()
 
         self.score = IntVar()
         self.Score = Entry(self.frame2, width=30, font=(
             'Arial 15'), highlightthickness=2, relief='flat', textvariable=self.score)
-        self.Score.config(highlightcolor='green4', highlightbackground='green4')
+        self.Score.config(highlightcolor='green4',
+                          highlightbackground='green4')
         self.Score.pack(ipadx=10, ipady=3, padx=20)
 
         # added event listener to the button to save user info
         submit_button = Button(self.frame2, text="Save Entry", cursor="hand2", bg='green', fg='white', borderwidth='2', relief='groove', font=(
             'Arial 13'), command=self.saveUserInfos)
-        submit_button.pack(padx=20, ipadx=20, ipady=8, pady=20, anchor='w', side='left')
+        submit_button.pack(padx=20, ipadx=20, ipady=8,
+                           pady=20, anchor='w', side='left')
 
         # button to clear entry
         clear_button = Button(self.frame2, text="Clear Entry", cursor="hand2", bg='green', fg='white', borderwidth='2', relief='groove', font=(
             'Arial 13'), command=self.clearEntry)
-        clear_button.pack(padx=20, ipadx=20, ipady=8, pady=20, anchor='e', side='right')
-
-        # menu bar for run analysis
-        self.menubar = Menu(self.frame0, background='red', foreground='white')
-        window.config(menu=self.menubar)
-
-        self.analysisMenu = Menu(self.menubar, tearoff=0)
-        self.analysisMenu.config(bg = "GREEN",fg='white',activebackground='yellow',activeforeground='black',relief=FLAT)
-
-        # I commented this line of code to hide the run analysis button, the code is later in the open file function and the show field function
-
-        #self.menubar.add_cascade(label='Run Analysis', menu = self.analysisMenu)
-        self.analysisMenu.add_command(
-            label='Mean score', command=self.meanScore)
-        self.analysisMenu.add_command(label='Max score', command=self.maxScore)
-        self.analysisMenu.add_command(label='Min score', command=self.minScore)
-        self.analysisMenu.add_command(
-            label='Highest score', command=self.highStudent)
-        self.analysisMenu.add_command(
-            label='Students above 70', command=self.passScore)
-        self.analysisMenu.add_command(
-            label='Students that failed', command=self.failedScore)
+        clear_button.pack(padx=20, ipadx=20, ipady=8,
+                          pady=20, anchor='e', side='right')
 
         # creating a forth frame for displaying eda results
         self.frame3 = Frame(window, bg='yellow')
-        self.result = Label(self.frame3, text="", font=('Arial 16'), padx=20, pady=10, bg='yellow', fg='black')
+        self.result = Label(self.frame3, text="", font=(
+            'Arial 16'), padx=20, pady=10, bg='yellow', fg='black')
         self.result.pack()
-        self.namesLabel = Label(self.frame3, text='', font=('Arial 16'), padx=20, pady=4, bg='yellow', fg='black')
+        self.namesLabel = Label(self.frame3, text='', font=(
+            'Arial 16'), padx=20, pady=4, bg='yellow', fg='black')
         self.namesLabel.pack()
 
         # for going back to frame2
         back_button = Button(self.frame3, text="Back", cursor="hand2", bg='green', fg='white', borderwidth='2', relief='groove', font=(
             'Arial 13'), command=self.backToFrame2Btn)
-        back_button.pack(padx=30, pady=10, ipadx=20, ipady=8, anchor='ne', side='bottom')
+        back_button.pack(padx=30, pady=10, ipadx=20,
+                         ipady=8, anchor='ne', side='bottom')
 
         window.mainloop()
 
@@ -162,9 +182,6 @@ class MainPage:
                 self.courseInputValue['text'] = sameTitle
             # print(sameTitle)
 
-            # code to show the run analysis btn
-            self.menubar.add_cascade(
-                label='Run Analysis', menu=self.analysisMenu)
             self.command = 'open file'
 
     # creating new file function
@@ -194,15 +211,12 @@ class MainPage:
             # to hide the second frame
             self.frame1.pack_forget()
 
-            # code to show the run analysis btn
-            self.menubar.add_cascade(
-                label='Run Analysis', menu=self.analysisMenu)
-
             # setting the subject value from the subject value input field
             if self.command == 'create file':
                 self.courseInputValue['text'] = self.courseInput.get().upper()
         else:
-            tkinter.messagebox.showerror("Error", "Course title field is empty!")
+            tkinter.messagebox.showerror(
+                "Error", "Course title field is empty!")
 
     def saveUserInfos(self):
 
@@ -210,7 +224,7 @@ class MainPage:
             # create a new row everytime new informations are added
             # new row will be added to the multi dimensional list, the matrix[] list
             current_row = [self.courseInput.get(), self.matricNo.get(), self.firstname.get(),
-                       self.lastname.get(), self.score.get()]
+                           self.lastname.get(), self.score.get()]
 
             # appending the new row to the main list
             self.matrix.append(current_row)
@@ -245,7 +259,8 @@ class MainPage:
             # print(self.matrix)
 
         else:
-            tkinter.messagebox.showerror("Error", "Student info not complete !")
+            tkinter.messagebox.showerror(
+                "Error", "Student info not complete !")
 
     def clearEntry(self):
         self.MatricNo.delete(0, END)
@@ -288,7 +303,7 @@ class MainPage:
         self.frame3.pack(fill="both", expand=True)
         self.frame2.pack_forget()
 
-        #clearing any content in the namesLabel label
+        # clearing any content in the namesLabel label
         self.namesLabel.destroy()
 
         self.result['text'] = 'The average score is ' + str(self.averageScore)
@@ -310,11 +325,10 @@ class MainPage:
         self.frame3.pack(fill="both", expand=True)
         self.frame2.pack_forget()
 
-        #clearing any content in the namesLabel label
+        # clearing any content in the namesLabel label
         self.namesLabel.destroy()
 
         self.result['text'] = 'The maximum score is ' + str(self.maxScore)
-        
 
     def minScore(self):
         minList = []
@@ -332,7 +346,7 @@ class MainPage:
         self.frame3.pack(fill="both", expand=True)
         self.frame2.pack_forget()
 
-        #clearing any content in the namesLabel label
+        # clearing any content in the namesLabel label
         self.namesLabel.destroy()
 
         self.result['text'] = 'The minimum score is ' + str(self.minScore)
@@ -363,40 +377,40 @@ class MainPage:
         self.frame3.pack(fill="both", expand=True)
         self.frame2.pack_forget()
 
-        #empty array to store the text to be displayed for each student with the highest mark
+        # empty array to store the text to be displayed for each student with the highest mark
         someArray = []
 
-        #iterating through the highest score array to add students info in the someArray[] array
-        #and appending the results
+        # iterating through the highest score array to add students info in the someArray[] array
+        # and appending the results
         for i in range(len(self.highestStudent)):
-            #print(self.highestStudent[i])
+            # print(self.highestStudent[i])
             self.result['text'] = 'The student(s) with the highest score is/are: '
-            someArray.append(str(self.highestStudent[i][3] + " " + str(self.highestStudent[i][2]) + "           " + 
-                str(self.highestStudent[i][1]) + "             " + str(self.highestStudent[i][4])))
+            someArray.append(str(self.highestStudent[i][3] + " " + str(self.highestStudent[i][2]) + "           " +
+                                 str(self.highestStudent[i][1]) + "             " + str(self.highestStudent[i][4])))
 
-        #clearing any content in the namesLabel label
+        # clearing any content in the namesLabel label
         self.namesLabel.destroy()
-        
-        #creating the label for the students info
-        self.namesLabel = Label(self.frame3, text='', font=('Arial 13'), padx=20, pady=10, bg='yellow', fg='black', justify=LEFT)
+
+        # creating the label for the students info
+        self.namesLabel = Label(self.frame3, text='', font=(
+            'Arial 13'), padx=20, pady=10, bg='yellow', fg='black', justify=LEFT)
         self.namesLabel.pack()
-        
-        #a function to display as many labels as possible for each high score
+
+        # a function to display as many labels as possible for each high score
         def addHighScoreNameToLabel():
             element = ''
             for i in range(len(someArray)):
-                element = element + someArray[i]+'\n' 
+                element = element + someArray[i]+'\n'
             return element
 
-        #adding the texts to the label created above
+        # adding the texts to the label created above
         self.namesLabel['text'] = addHighScoreNameToLabel()
-
 
     def passScore(self):
         with open(self.filename, 'r') as openfile:
             fileToAnalyze = json.load(openfile)
 
-        #empty list to put all students that pass 70
+        # empty list to put all students that pass 70
         self.passScores = []
 
         # iterating through the file's multidimensional list rows i and column 4,
@@ -404,44 +418,47 @@ class MainPage:
         for i in range(len(fileToAnalyze)):
             if fileToAnalyze[i][4] >= 70:
                 self.passScores.append(fileToAnalyze[i])
-        #print(self.passScores)
+        # print(self.passScores)
 
          # hiding the frame2 and showing the eda results frame
         self.frame3.pack(fill="both", expand=True)
         self.frame2.pack_forget()
 
-        #empty array to stored the text to be displayed for each student above the 70 mark
+        # empty array to stored the text to be displayed for each student above the 70 mark
         someArray = []
 
-        #iterating through the passScores array to add students info in the someArray[] array
-        #and appending the results
+        # iterating through the passScores array to add students info in the someArray[] array
+        # and appending the results
         for i in range(len(self.passScores)):
-            #print(self.passScores[i])
+            # print(self.passScores[i])
             self.result['text'] = 'The students with 70 and above are: '
-            someArray.append(str(self.passScores[i][3] + " " + str(self.passScores[i][2]) + "           " + 
-                str(self.passScores[i][1]) + "             " + str(self.passScores[i][4])))
-        
-        #clearing any content in the namesLabel label
+            someArray.append(str(self.passScores[i][3] + " " + str(self.passScores[i][2]) + "           " +
+                                 str(self.passScores[i][1]) + "             " + str(self.passScores[i][4])))
+
+        # clearing any content in the namesLabel label
         self.namesLabel.destroy()
 
-        #creating the label for the students info
-        self.namesLabel = Label(self.frame3, text='')
+        # creating the label for the students info
+        self.namesLabel = Label(self.frame3, text='', font=(
+            'Arial 13'), padx=20, pady=10, bg='yellow', fg='black', justify=LEFT)
         self.namesLabel.pack()
-        #a function to display as many labels as possible for each high score
+        
+        # a function to display as many labels as possible for each high score
+
         def addPassScoreNameToLabel():
             element = ''
             for i in range(len(someArray)):
-                element = element + someArray[i]+'\n' 
+                element = element + someArray[i]+'\n'
             return element
 
-        #adding the texts to the label created above
+        # adding the texts to the label created above
         self.namesLabel['text'] = addPassScoreNameToLabel()
 
     def failedScore(self):
         with open(self.filename, 'r') as openfile:
             fileToAnalyze = json.load(openfile)
 
-        #empty list to put all students that got less than 40
+        # empty list to put all students that got less than 40
         self.lessScores = []
 
         # iterating through the file's multidimensional list rows i and column 4,
@@ -449,37 +466,57 @@ class MainPage:
         for i in range(len(fileToAnalyze)):
             if fileToAnalyze[i][4] < 40:
                 self.lessScores.append(fileToAnalyze[i])
-        #print(self.passScores)
+        # print(self.passScores)
 
          # hiding the frame2 and showing the eda results frame
         self.frame3.pack(fill="both", expand=True)
         self.frame2.pack_forget()
 
-        #empty array to stored the text to be displayed for each student below the 40 mark
+        # empty array to stored the text to be displayed for each student below the 40 mark
         someArray = []
 
-        #iterating through the lessScores array to add students info in the someArray[] array
-        #and appending the results
+        # iterating through the lessScores array to add students info in the someArray[] array
+        # and appending the results
         for i in range(len(self.lessScores)):
             self.result['text'] = 'The students that scored below 40 are: '
-            someArray.append(str(self.lessScores[i][3] + " " + str(self.lessScores[i][2]) + "           " + 
-                str(self.lessScores[i][1]) + "             " + str(self.lessScores[i][4])))
-        
-        #clearing any content in the namesLabel label
+            someArray.append(str(self.lessScores[i][3] + " " + str(self.lessScores[i][2]) + "           " +
+                                 str(self.lessScores[i][1]) + "             " + str(self.lessScores[i][4])))
+
+        # clearing any content in the namesLabel label
         self.namesLabel.destroy()
 
-        #creating the label for the students info
-        self.namesLabel = Label(self.frame3, text='')
+        # creating the label for the students info
+        self.namesLabel = Label(self.frame3, text='', font=(
+            'Arial 13'), padx=20, pady=10, bg='yellow', fg='black', justify=LEFT)
         self.namesLabel.pack()
-        #a function to display as many labels as possible for each high score
+        # a function to display as many labels as possible for each high score
+
         def addFailedNameToLabel():
             element = ''
             for i in range(len(someArray)):
-                element = element + someArray[i]+'\n' 
+                element = element + someArray[i]+'\n'
             return element
 
-        #adding the texts to the label created above
+        # adding the texts to the label created above
         self.namesLabel['text'] = addFailedNameToLabel()
+
+    def showRunAnalysisDropdown(self, *args):
+        runAnalysisValue = self.runAnalysisVariable.get()
+
+        if runAnalysisValue == 'Average score':
+            self.meanScore()
+        elif runAnalysisValue == 'Maximum score':
+            self.maxScore()
+        elif runAnalysisValue == 'Minimum score':
+            self.minScore()
+        elif runAnalysisValue == 'Best student':
+            self.highStudent()
+        elif runAnalysisValue == 'Students that failed':
+            self.failedScore()
+        elif runAnalysisValue == 'Students with 70 and above':
+            self.passScore()
+        
+        runAnalysisValue = self.runAnalysisVariable.set('Run Analysis')
 
     def backToFrame2Btn(self):
         self.frame2.pack(fill="both", expand=True)
