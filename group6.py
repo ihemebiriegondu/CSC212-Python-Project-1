@@ -170,7 +170,7 @@ class MainPage:
     # opening existing file function
     def openFile(self):
         self.filename = filedialog.askopenfilename(
-            initialdir='/', title='Open file', filetypes=(("Json file", "*.json"), ("xml files", "*.xml")))
+            initialdir='/', title='Open file', filetypes=(("xml files", "*.xml"), ("Json file", "*.json")))
         if self.filename != '':
             self.frame2.pack(fill="both", expand=True)
             self.frame0.pack_forget()
@@ -187,7 +187,7 @@ class MainPage:
     # creating new file function
     def createFile(self):
         self.filename = filedialog.asksaveasfilename(
-            initialdir='/', title='Save file', defaultextension=".json")
+            initialdir='/', title='Save file', defaultextension=".json", filetypes=(("xml files", "*.xml"), ("Json file", "*.json")))
 
         if self.filename != '':
             self.frame1.pack(fill="both", expand=True)
@@ -318,8 +318,8 @@ class MainPage:
             maxList.append(rows[4])
 
         # using python max() function to get the max element in the list and assigning it to the maxScore variable
-        self.maxScore = max(maxList)
-        # print(self.maxScore)
+        self.maxscore = max(maxList)
+        # print(self.maxscore)
 
         # hiding the frame2 and showing the eda results frame
         self.frame3.pack(fill="both", expand=True)
@@ -328,7 +328,7 @@ class MainPage:
         # clearing any content in the namesLabel label
         self.namesLabel.destroy()
 
-        self.result['text'] = 'The maximum score is ' + str(self.maxScore)
+        self.result['text'] = 'The maximum score is ' + str(self.maxscore)
 
     def minScore(self):
         minList = []
@@ -339,8 +339,8 @@ class MainPage:
             minList.append(rows[4])
 
         # using python min() function to get the min element in the list and assigning it to the maxScore variable
-        self.minScore = min(minList)
-        # print(self.minScore)
+        self.minscore = min(minList)
+        # print(self.minscore)
 
         # hiding the frame2 and showing the eda results frame
         self.frame3.pack(fill="both", expand=True)
@@ -349,7 +349,7 @@ class MainPage:
         # clearing any content in the namesLabel label
         self.namesLabel.destroy()
 
-        self.result['text'] = 'The minimum score is ' + str(self.minScore)
+        self.result['text'] = 'The minimum score is ' + str(self.minscore)
 
     def highStudent(self):
         with open(self.filename, 'r') as openfile:
@@ -361,15 +361,15 @@ class MainPage:
         for rows in fileToAnalyze:
             maxList.append(rows[4])
 
-        self.maxScore = max(maxList)
-        # print(self.maxScore)
+        self.maxscore = max(maxList)
+        # print(self.maxscore)
 
         # I created a list incase there are more than one student with the highest score
         self.highestStudent = []
         # iterating through the file's multidimensional list rows i and column 4,
         # to check which row has score that is equal to the maximum score and printing it out
         for i in range(len(fileToAnalyze)):
-            if fileToAnalyze[i][4] == self.maxScore:
+            if fileToAnalyze[i][4] == self.maxscore:
                 self.highestStudent.append(fileToAnalyze[i])
         # print(self.highestStudent)
 
@@ -458,13 +458,13 @@ class MainPage:
         with open(self.filename, 'r') as openfile:
             fileToAnalyze = json.load(openfile)
 
-        # empty list to put all students that got less than 40
+        # empty list to put all students that got less than 30
         self.lessScores = []
 
         # iterating through the file's multidimensional list rows i and column 4,
-        # to check which row has score that is less than 40 and printing it out
+        # to check which row has score that is less than 30 and printing it out
         for i in range(len(fileToAnalyze)):
-            if fileToAnalyze[i][4] < 40:
+            if fileToAnalyze[i][4] < 30:
                 self.lessScores.append(fileToAnalyze[i])
         # print(self.passScores)
 
@@ -472,13 +472,13 @@ class MainPage:
         self.frame3.pack(fill="both", expand=True)
         self.frame2.pack_forget()
 
-        # empty array to stored the text to be displayed for each student below the 40 mark
+        # empty array to stored the text to be displayed for each student below the 30 mark
         someArray = []
 
         # iterating through the lessScores array to add students info in the someArray[] array
         # and appending the results
         for i in range(len(self.lessScores)):
-            self.result['text'] = 'The students that scored below 40 are: '
+            self.result['text'] = 'The students that scored below 30 are: '
             someArray.append(str(self.lessScores[i][3] + " " + str(self.lessScores[i][2]) + "           " +
                                  str(self.lessScores[i][1]) + "             " + str(self.lessScores[i][4])))
 
